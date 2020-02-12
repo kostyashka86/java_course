@@ -3,14 +3,22 @@ package ru.java_course.sandbox;
 
 public class Point{
 
-    public double x1, y1, x2, y2;
+    public double x, y;
 
     public Point (double x, double y) {
-        this.x1 = x;
-        this.y1 = y;
-        this.x2 = x;
-        this.y2 = y;
+        this.x = x;
+        this.y = y;
+    }
 
+    public  double distance(double x, double y) {
+
+        return Math.sqrt((this.x - x) * (this.x - x) + (this.y - y)*(this.y - y));
+
+    }
+
+    public double distance(Point p)
+    {
+        return distance(p.x, p.y);
     }
 
 }
