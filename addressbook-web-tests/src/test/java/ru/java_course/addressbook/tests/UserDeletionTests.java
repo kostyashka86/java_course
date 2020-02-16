@@ -6,9 +6,9 @@ public class UserDeletionTests extends TestBase{
 
   @Test
   public void testUserDeletion() throws Exception {
-    app.gotoHomePage();
-    app.selectGroup();
-    app.deleteSelectedUsers();
+    app.getNavigationHelper().gotoHomePage();
+    app.getGroupHelper().selectGroup();
+    app.getUserHelper().deleteSelectedUsers();
     app.logout();
   }
 
