@@ -1,10 +1,6 @@
 package ru.java_course.addressbook;
 
-import java.util.concurrent.TimeUnit;
-import org.testng.annotations.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.Test;
 
 public class UserCreationTests extends TestBase{
 
