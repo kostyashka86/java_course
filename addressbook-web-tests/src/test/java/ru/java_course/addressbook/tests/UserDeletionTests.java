@@ -1,4 +1,4 @@
-package ru.java_course.addressbook;
+package ru.java_course.addressbook.tests;
 
 import org.testng.annotations.Test;
 
@@ -6,10 +6,10 @@ public class UserDeletionTests extends TestBase{
 
   @Test
   public void testUserDeletion() throws Exception {
-    gotoHomePage();
-    selectGroup();
-    deleteSelectedUsers();
-    logout();
+    app.gotoHomePage();
+    app.selectGroup();
+    app.deleteSelectedUsers();
+    app.logout();
   }
 
 }
