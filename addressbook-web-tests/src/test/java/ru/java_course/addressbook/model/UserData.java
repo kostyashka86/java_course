@@ -10,11 +10,9 @@ public class UserData {
     private final String address;
     private final String mobile;
     private final String email;
-    private final String bday;
-    private final String bmonth;
-    private final String byear;
 
-    public UserData(String name, String middlename, String lastname, String nickname, String title, String company, String address, String mobile, String email, String bday, String bmonth, String byear) {
+
+    public UserData(String name, String middlename, String lastname, String nickname, String title, String company, String address, String mobile, String email) {
         this.name = name;
         this.middlename = middlename;
         this.lastname = lastname;
@@ -24,9 +22,7 @@ public class UserData {
         this.address = address;
         this.mobile = mobile;
         this.email = email;
-        this.bday = bday;
-        this.bmonth = bmonth;
-        this.byear = byear;
+
     }
 
     public String getName() {
@@ -65,15 +61,4 @@ public class UserData {
         return email;
     }
 
-    public String getBday() {
-        return bday;
-    }
-
-    public String getBmonth() {
-        return bmonth;
-    }
-
-    public String getByear() {
-        return byear;
-    }
 }

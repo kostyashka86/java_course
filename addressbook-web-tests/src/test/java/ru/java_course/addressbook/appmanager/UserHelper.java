@@ -2,7 +2,6 @@ package ru.java_course.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Select;
 import ru.java_course.addressbook.model.UserData;
 
 public class UserHelper extends HelperBase{
@@ -39,5 +38,13 @@ public class UserHelper extends HelperBase{
     public void deleteSelectedUsers() {
       click(By.xpath("//input[@value='Delete']"));
       wd.switchTo().alert().accept();
+    }
+
+    public void submitUserModification() {
+        click(By.xpath("(//input[@name='update'])[2]"));
+    }
+
+    public void initUserModification() {
+        click(By.xpath("//img[@alt='Edit']"));
     }
 }
