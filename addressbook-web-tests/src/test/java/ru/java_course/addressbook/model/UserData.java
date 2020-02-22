@@ -10,9 +10,11 @@ public class UserData {
     private final String address;
     private final String mobile;
     private final String email;
+    private String group;
 
 
-    public UserData(String name, String middlename, String lastname, String nickname, String title, String company, String address, String mobile, String email) {
+    public UserData(String name, String middlename, String lastname, String nickname, String title, String company,
+                    String address, String mobile, String email, String group) {
         this.name = name;
         this.middlename = middlename;
         this.lastname = lastname;
@@ -22,7 +24,7 @@ public class UserData {
         this.address = address;
         this.mobile = mobile;
         this.email = email;
-
+        this.group = group;
     }
 
     public String getName() {
@@ -61,4 +63,7 @@ public class UserData {
         return email;
     }
 
+    public String getGroup() {
+        return group;
+        }
 }
