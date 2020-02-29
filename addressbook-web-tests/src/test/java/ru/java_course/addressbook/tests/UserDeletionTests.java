@@ -16,7 +16,7 @@ public class UserDeletionTests extends TestBase{
               null, null, null, null, null, "[none]"));
     }
     int before = app.getUserHelper().getUserCount();
-    app.getGroupHelper().selectGroup();
+    app.getGroupHelper().selectGroup(before - 1);
     app.getUserHelper().deleteSelectedUsers();
     sleep(4000);
     int after = app.getUserHelper().getUserCount();

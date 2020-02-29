@@ -4,8 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
 
-import static java.lang.Thread.sleep;
-
 public class UserModificationTests extends TestBase {
 
     @Test
@@ -17,7 +15,7 @@ public class UserModificationTests extends TestBase {
                     null, null, null, null, null, "[none]"));
         }
         int before = app.getUserHelper().getUserCount();
-        app.getGroupHelper().selectGroup();
+        app.getGroupHelper().selectGroup(before - 1);
         app.getUserHelper().initUserModification();
         app.getUserHelper().fillUserForm(new UserData("Sergei", "Ivanovich", "Kozlov", "ivashka",
                 "title", "Qiwi", "Moscow", "+77777777777", "ivanov@mail.ru", "[none]"), false);
