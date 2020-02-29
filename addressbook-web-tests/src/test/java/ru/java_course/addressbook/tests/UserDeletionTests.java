@@ -23,6 +23,9 @@ public class UserDeletionTests extends TestBase{
     sleep(4000);
     List<UserData> after = app.getUserHelper().getUserList();
     Assert.assertEquals(after.size(), before.size() - 1);
+    before.remove(before.size() - 1);
+    Assert.assertEquals(after, before);
+
     app.logout();
   }
 
