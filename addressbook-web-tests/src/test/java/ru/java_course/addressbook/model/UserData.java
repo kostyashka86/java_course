@@ -3,7 +3,7 @@ package ru.java_course.addressbook.model;
 import java.util.Objects;
 
 public class UserData {
-    private String id;
+    private int id;
     private final String name;
     private final String middlename;
     private final String lastname;
@@ -18,7 +18,7 @@ public class UserData {
 
     public UserData(String name, String middlename, String lastname, String nickname, String title, String company,
                     String address, String mobile, String email, String group) {
-        this.id = null;
+        this.id = 0;
         this.name = name;
         this.middlename = middlename;
         this.lastname = lastname;
@@ -31,7 +31,7 @@ public class UserData {
         this.group = group;
     }
 
-    public UserData(String id, String name, String middlename, String lastname, String nickname, String title, String company,
+    public UserData(int id, String name, String middlename, String lastname, String nickname, String title, String company,
                     String address, String mobile, String email, String group) {
         this.id = id;
         this.name = name;
@@ -44,29 +44,6 @@ public class UserData {
         this.mobile = mobile;
         this.email = email;
         this.group = group;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserData userData = (UserData) o;
-        return Objects.equals(id, userData.id) &&
-                Objects.equals(name, userData.name) &&
-                Objects.equals(middlename, userData.middlename) &&
-                Objects.equals(lastname, userData.lastname) &&
-                Objects.equals(nickname, userData.nickname) &&
-                Objects.equals(title, userData.title) &&
-                Objects.equals(company, userData.company) &&
-                Objects.equals(address, userData.address) &&
-                Objects.equals(mobile, userData.mobile) &&
-                Objects.equals(email, userData.email) &&
-                Objects.equals(group, userData.group);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, middlename, lastname, nickname, title, company, address, mobile, email, group);
     }
 
     @Override
@@ -86,7 +63,34 @@ public class UserData {
                 '}';
     }
 
-    public String getId() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserData userData = (UserData) o;
+        return id == userData.id &&
+                Objects.equals(name, userData.name) &&
+                Objects.equals(middlename, userData.middlename) &&
+                Objects.equals(lastname, userData.lastname) &&
+                Objects.equals(nickname, userData.nickname) &&
+                Objects.equals(title, userData.title) &&
+                Objects.equals(company, userData.company) &&
+                Objects.equals(address, userData.address) &&
+                Objects.equals(mobile, userData.mobile) &&
+                Objects.equals(email, userData.email) &&
+                Objects.equals(group, userData.group);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, middlename, lastname, nickname, title, company, address, mobile, email, group);
+    }
+
+    public int getId() {
         return id;
     }
 

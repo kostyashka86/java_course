@@ -14,7 +14,7 @@ public class UserDeletionTests extends TestBase{
   public void testUserDeletion() throws Exception {
     app.getNavigationHelper().gotoHomePage();
     if (! app.getUserHelper().isThereAUser()) {
-      app.getUserHelper().createUser(new UserData("Sergei", "Ivanovich", "Kozlov", "ivashka",
+      app.getUserHelper().createUser(new UserData(null, null, "Ivanov Ivan", null,
               null, null, null, null, null, "[none]"));
     }
     List<UserData> before = app.getUserHelper().getUserList();
