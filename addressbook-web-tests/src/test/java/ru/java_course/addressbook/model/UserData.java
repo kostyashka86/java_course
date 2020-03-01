@@ -13,12 +13,26 @@ public class UserData {
     private final String address;
     private final String mobile;
     private final String email;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserData userData = (UserData) o;
+        return Objects.equals(lastname, userData.lastname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lastname);
+    }
+
     private String group;
 
 
     public UserData(String name, String middlename, String lastname, String nickname, String title, String company,
                     String address, String mobile, String email, String group) {
-        this.id = 0;
+        this.id = Integer.MAX_VALUE;
         this.name = name;
         this.middlename = middlename;
         this.lastname = lastname;
@@ -65,29 +79,6 @@ public class UserData {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserData userData = (UserData) o;
-        return id == userData.id &&
-                Objects.equals(name, userData.name) &&
-                Objects.equals(middlename, userData.middlename) &&
-                Objects.equals(lastname, userData.lastname) &&
-                Objects.equals(nickname, userData.nickname) &&
-                Objects.equals(title, userData.title) &&
-                Objects.equals(company, userData.company) &&
-                Objects.equals(address, userData.address) &&
-                Objects.equals(mobile, userData.mobile) &&
-                Objects.equals(email, userData.email) &&
-                Objects.equals(group, userData.group);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, middlename, lastname, nickname, title, company, address, mobile, email, group);
     }
 
     public int getId() {

@@ -2,8 +2,10 @@ package ru.java_course.addressbook.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.UserData;
 
+import javax.xml.crypto.Data;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -20,9 +22,11 @@ public class UserCreationTests extends TestBase{
     List<UserData> after = app.getUserHelper().getUserList();
     Assert.assertEquals(after.size(), before.size() + 1);
 
-    user.setId(after.stream().max(Comparator.comparingInt(UserData::getId)).get().getId());
     before.add(user);
-    Assert.assertEquals(new HashSet<>(after) , new HashSet<>(before));
+    Comparator<? super UserData> byId = Comparator.comparingInt(UserData::getId);
+    before.sort(byId);
+    after.sort(byId);
+    Assert.assertEquals(after, before);
     app.logout();
   }
 
