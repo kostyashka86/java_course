@@ -3,6 +3,7 @@ package ru.java_course.addressbook.model;
 import java.util.Objects;
 
 public class UserData {
+    private String id;
     private final String name;
     private final String middlename;
     private final String lastname;
@@ -15,12 +16,43 @@ public class UserData {
     private String group;
 
 
+    public UserData(String name, String middlename, String lastname, String nickname, String title, String company,
+                    String address, String mobile, String email, String group) {
+        this.id = null;
+        this.name = name;
+        this.middlename = middlename;
+        this.lastname = lastname;
+        this.nickname = nickname;
+        this.title = title;
+        this.company = company;
+        this.address = address;
+        this.mobile = mobile;
+        this.email = email;
+        this.group = group;
+    }
+
+    public UserData(String id, String name, String middlename, String lastname, String nickname, String title, String company,
+                    String address, String mobile, String email, String group) {
+        this.id = id;
+        this.name = name;
+        this.middlename = middlename;
+        this.lastname = lastname;
+        this.nickname = nickname;
+        this.title = title;
+        this.company = company;
+        this.address = address;
+        this.mobile = mobile;
+        this.email = email;
+        this.group = group;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserData userData = (UserData) o;
-        return Objects.equals(name, userData.name) &&
+        return Objects.equals(id, userData.id) &&
+                Objects.equals(name, userData.name) &&
                 Objects.equals(middlename, userData.middlename) &&
                 Objects.equals(lastname, userData.lastname) &&
                 Objects.equals(nickname, userData.nickname) &&
@@ -34,30 +66,28 @@ public class UserData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, middlename, lastname, nickname, title, company, address, mobile, email, group);
+        return Objects.hash(id, name, middlename, lastname, nickname, title, company, address, mobile, email, group);
     }
 
     @Override
     public String toString() {
         return "UserData{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", middlename='" + middlename + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", title='" + title + '\'' +
+                ", company='" + company + '\'' +
+                ", address='" + address + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
+                ", group='" + group + '\'' +
                 '}';
     }
 
-    public UserData(String name, String middlename, String lastname, String nickname, String title, String company,
-                    String address, String mobile, String email, String group) {
-        this.name = name;
-        this.middlename = middlename;
-        this.lastname = lastname;
-        this.nickname = nickname;
-        this.title = title;
-        this.company = company;
-        this.address = address;
-        this.mobile = mobile;
-        this.email = email;
-        this.group = group;
+    public String getId() {
+        return id;
     }
 
     public String getName() {

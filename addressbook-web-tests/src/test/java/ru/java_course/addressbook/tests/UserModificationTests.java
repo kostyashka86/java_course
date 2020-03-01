@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class UserModificationTests extends TestBase {
@@ -13,18 +14,23 @@ public class UserModificationTests extends TestBase {
 
         app.getNavigationHelper().gotoHomePage();
         if (! app.getUserHelper().isThereAUser()) {
-            app.getUserHelper().createUser(new UserData("Sergei", "Ivanovich", "Kozlov", "ivashka",
+            app.getUserHelper().createUser(new UserData(null, null, "Ivanov Ivan", null,
                     null, null, null, null, null, "[none]"));
         }
         List<UserData> before = app.getUserHelper().getUserList();
         app.getGroupHelper().selectGroup(before.size() - 1);
         app.getUserHelper().initUserModification();
-        app.getUserHelper().fillUserForm(new UserData("Sergei", "Ivanovich", "Kozlov", "ivashka",
-                "title", "Qiwi", "Moscow", "+77777777777", "ivanov@mail.ru", "[none]"), false);
+        UserData user = new UserData(before.get(before.size() - 1).getId(),null, null, "Ivanov Ivan", null,
+                null, null, null, null, null, "[none]");
+        app.getUserHelper().fillUserForm(user, false);
         app.getUserHelper().submitUserModification();
         app.getUserHelper().returnToHomePage();
         List<UserData> after = app.getUserHelper().getUserList();
         Assert.assertEquals(after.size(), before.size());
+
+        before.remove(before.size() - 1);
+        before.add(user);
+        Assert.assertEquals(new HashSet<>(after) , new HashSet<>(before));
     }
 
 }
