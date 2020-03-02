@@ -8,8 +8,11 @@ import org.testng.Assert;
 import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.UserData;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class UserHelper extends HelperBase{
 
@@ -52,6 +55,7 @@ public class UserHelper extends HelperBase{
     public boolean isThereAUser() {
         return isElementPresent(By.name("selected[]"));
     }
+
     public void initUserCreation() {
       click(By.linkText("add new"));
     }
@@ -78,8 +82,9 @@ public class UserHelper extends HelperBase{
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String name = element.getText();
+            String[] words = name.split(" ");
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            UserData user = new UserData(id, null, null, name, null,
+            UserData user = new UserData(id, words[1], null, words[0], null,
                     null, null, null, null, null, "[none]");
             users.add(user);
         }

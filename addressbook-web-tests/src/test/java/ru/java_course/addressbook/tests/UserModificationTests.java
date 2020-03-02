@@ -2,12 +2,9 @@ package ru.java_course.addressbook.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.UserData;
 
-import javax.xml.crypto.Data;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class UserModificationTests extends TestBase {
@@ -17,13 +14,13 @@ public class UserModificationTests extends TestBase {
 
         app.getNavigationHelper().gotoHomePage();
         if (! app.getUserHelper().isThereAUser()) {
-            app.getUserHelper().createUser(new UserData(null, null, "Ivanov Ivan", null,
+            app.getUserHelper().createUser(new UserData("Konstantin", null, "Zhuravlev", null,
                     null, null, null, null, null, "[none]"));
         }
         List<UserData> before = app.getUserHelper().getUserList();
         app.getGroupHelper().selectGroup(before.size() - 1);
         app.getUserHelper().initUserModification();
-        UserData user = new UserData(before.get(before.size() - 1).getId(),null, null, "Ivanov Ivan", null,
+        UserData user = new UserData(before.get(before.size() - 1).getId(), "Konstantin", null, "Zhuravlev", null,
                 null, null, null, null, null, "[none]");
         app.getUserHelper().fillUserForm(user, false);
         app.getUserHelper().submitUserModification();
