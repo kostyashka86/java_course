@@ -1,18 +1,17 @@
 package ru.java_course.addressbook.tests;
 
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.GroupData;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 
 public class GroupCreationTests extends TestBase {
 
     @Test
-    public void testGroupCreation() throws Exception {
+    public void testGroupCreation() {
 
         app.getNavigationHelper().gotoGroupPage();
         List<GroupData> before = app.getGroupHelper().getGroupList();
