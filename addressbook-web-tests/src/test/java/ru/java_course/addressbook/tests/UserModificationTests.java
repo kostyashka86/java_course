@@ -21,7 +21,7 @@ public class UserModificationTests extends TestBase {
         app.getGroupHelper().selectGroup(before.size() - 1);
         app.getUserHelper().initUserModification();
         UserData user = new UserData(before.get(before.size() - 1).getId(), "Konstantin", null, "Zhuravlev", null,
-                null, null, null, null, null, "[none]");
+                null, null, "New York", null, null, "[none]");
         app.getUserHelper().fillUserForm(user, false);
         app.getUserHelper().submitUserModification();
         app.getUserHelper().returnToHomePage();

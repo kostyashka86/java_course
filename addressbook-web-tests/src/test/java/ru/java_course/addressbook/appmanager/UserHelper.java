@@ -81,11 +81,10 @@ public class UserHelper extends HelperBase{
         List<UserData> users = new ArrayList<UserData>();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
-            String name = element.getText();
-            String[] words = name.split(" ");
+            List<WebElement> cells = element.findElements(By.tagName("td"));
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            UserData user = new UserData(id, words[1], null, words[0], null,
-                    null, null, null, null, null, "[none]");
+            UserData user = new UserData(id, cells.get(0).getText(), null, cells.get(1).getText(), null,
+                    null, null, cells.get(2).getText(), null, null, "[none]");
             users.add(user);
         }
         return users;
