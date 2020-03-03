@@ -69,8 +69,8 @@ public class UserHelper extends HelperBase{
         click(By.xpath("(//input[@name='update'])[2]"));
     }
 
-    public void initUserModification() {
-        click(By.xpath("//img[@alt='Edit']"));
+    public void initUserModification(int index) {
+        wd.findElements(By.xpath("//img[@alt='Edit']")).get(index).click();
     }
 
     public int getUserCount() {

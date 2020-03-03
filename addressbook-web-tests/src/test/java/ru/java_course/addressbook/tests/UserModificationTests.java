@@ -10,7 +10,7 @@ import java.util.List;
 public class UserModificationTests extends TestBase {
 
     @Test
-    public void testUserModification() throws InterruptedException {
+    public void testUserModification() {
 
         app.getNavigationHelper().gotoHomePage();
         if (! app.getUserHelper().isThereAUser()) {
@@ -18,10 +18,9 @@ public class UserModificationTests extends TestBase {
                     null, null, null, null, null, "[none]"));
         }
         List<UserData> before = app.getUserHelper().getUserList();
-        app.getGroupHelper().selectGroup(before.size() - 1);
-        app.getUserHelper().initUserModification();
-        UserData user = new UserData(before.get(before.size() - 1).getId(), "Konstantin", null, "Zhuravlev", null,
-                null, null, "New York", null, null, "[none]");
+        app.getUserHelper().initUserModification(before.size() - 1);
+        UserData user = new UserData(before.get(before.size() - 1).getId(), "Gleb", null, "Zhuravlev", null,
+                null, null, null, null, null, "[none]");
         app.getUserHelper().fillUserForm(user, false);
         app.getUserHelper().submitUserModification();
         app.getUserHelper().returnToHomePage();

@@ -2,21 +2,18 @@ package ru.java_course.addressbook.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.UserData;
 
-import javax.xml.crypto.Data;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class UserCreationTests extends TestBase{
 
   @Test
-  public void testUserCreation() throws Exception {
+  public void testUserCreation() {
     List<UserData> before = app.getUserHelper().getUserList();
     app.getUserHelper().initUserCreation();
-    UserData user = new UserData(null, null, "Ivanov Ivan", null,
+    UserData user = new UserData("Tatyana", null, "Krutikova", null,
             null, null, null, null, null, "[none]");
     app.getUserHelper().createUser(user);
     List<UserData> after = app.getUserHelper().getUserList();
