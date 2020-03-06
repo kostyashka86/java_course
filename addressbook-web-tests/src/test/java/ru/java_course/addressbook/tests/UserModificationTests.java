@@ -1,6 +1,7 @@
 package ru.java_course.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
 
@@ -9,25 +10,28 @@ import java.util.List;
 
 public class UserModificationTests extends TestBase {
 
+    @BeforeMethod
+    public void ensurePreconditions() {
+
+        app.goTo().homePage();
+        if (app.user().list().size() == 0) {
+            app.user().create(new UserData("Konstantin", null, "Zhuravlev", null,
+                    null, null, null, null, null, "[none]"));
+        }
+    }
+
     @Test
     public void testUserModification() {
 
-        app.getNavigationHelper().gotoHomePage();
-        if (! app.getUserHelper().isThereAUser()) {
-            app.getUserHelper().createUser(new UserData("Konstantin", null, "Zhuravlev", null,
-                    null, null, null, null, null, "[none]"));
-        }
-        List<UserData> before = app.getUserHelper().getUserList();
-        app.getUserHelper().initUserModification(before.size() - 1);
-        UserData user = new UserData(before.get(before.size() - 1).getId(), "Gleb", null, "Zhuravlev", null,
+        List<UserData> before = app.user().list();
+        int index = before.size() - 1;
+        UserData user = new UserData(before.get(index).getId(), "Gleb", null, "Zhuravlev", null,
                 null, null, null, null, null, "[none]");
-        app.getUserHelper().fillUserForm(user, false);
-        app.getUserHelper().submitUserModification();
-        app.getUserHelper().returnToHomePage();
-        List<UserData> after = app.getUserHelper().getUserList();
+        app.user().modify(index, user);
+        List<UserData> after = app.user().list();
         Assert.assertEquals(after.size(), before.size());
 
-        before.remove(before.size() - 1);
+        before.remove(index);
         before.add(user);
         Comparator<? super UserData> byId = Comparator.comparingInt(UserData::getId);
         before.sort(byId);

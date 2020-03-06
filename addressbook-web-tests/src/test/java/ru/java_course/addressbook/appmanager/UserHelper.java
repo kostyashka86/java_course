@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.lang.Thread.sleep;
+
 public class UserHelper extends HelperBase{
 
     public UserHelper(WebDriver wd) {
@@ -46,14 +48,29 @@ public class UserHelper extends HelperBase{
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
     }
-    public void createUser(UserData user) {
+    public void create(UserData user) {
         initUserCreation();
         fillUserForm(user,true);
         submitUserCreation();
         returnToHomePage();
     }
+    public void modify(int index, UserData user) {
+        initUserModification(index);
+        fillUserForm(user, false);
+        submitUserModification();
+        returnToHomePage();
+    }
+    public void delete(int index) throws InterruptedException {
+        selectUser(index);
+        deleteSelectedUsers();
+        sleep(4000);
+    }
     public boolean isThereAUser() {
         return isElementPresent(By.name("selected[]"));
+    }
+
+    public void selectUser(int index) {
+        wd.findElements(By.name("selected[]")).get(index).click();
     }
 
     public void initUserCreation() {
@@ -77,7 +94,7 @@ public class UserHelper extends HelperBase{
         return wd.findElements(By.name("selected[]")).size();
     }
 
-    public List<UserData> getUserList() {
+    public List<UserData> list() {
         List<UserData> users = new ArrayList<UserData>();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {

@@ -1,6 +1,7 @@
 package ru.java_course.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
 
@@ -10,23 +11,27 @@ import static java.lang.Thread.sleep;
 
 public class UserDeletionTests extends TestBase{
 
-  @Test
-  public void testUserDeletion() throws Exception {
-    app.getNavigationHelper().gotoHomePage();
-    if (! app.getUserHelper().isThereAUser()) {
-      app.getUserHelper().createUser(new UserData("Tatyana", null, "Krutikova", null,
+  @BeforeMethod
+  public void ensurePreconditions() {
+
+    app.goTo().homePage();
+    if (app.user().list().size() == 0) {
+      app.user().create(new UserData("Tatyana", null, "Krutikova", null,
               null, null, null, null, null, "[none]"));
     }
-    List<UserData> before = app.getUserHelper().getUserList();
-    app.getGroupHelper().selectGroup(before.size() - 1);
-    app.getUserHelper().deleteSelectedUsers();
-    sleep(4000);
-    List<UserData> after = app.getUserHelper().getUserList();
-    Assert.assertEquals(after.size(), before.size() - 1);
-    before.remove(before.size() - 1);
-    Assert.assertEquals(after, before);
+  }
 
-    app.logout();
+  @Test
+  public void testUserDeletion() throws Exception {
+
+    List<UserData> before = app.user().list();
+    int index = before.size() - 1;
+    app.user().delete(index);
+    List<UserData> after = app.user().list();
+    Assert.assertEquals(after.size(), before.size() - 1);
+
+    before.remove(index);
+    Assert.assertEquals(after, before);
   }
 
 }

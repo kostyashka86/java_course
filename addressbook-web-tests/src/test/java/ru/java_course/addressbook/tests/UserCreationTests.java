@@ -11,12 +11,12 @@ public class UserCreationTests extends TestBase{
 
   @Test
   public void testUserCreation() {
-    List<UserData> before = app.getUserHelper().getUserList();
-    app.getUserHelper().initUserCreation();
+
+    List<UserData> before = app.user().list();
     UserData user = new UserData("Tatyana", null, "Krutikova", null,
             null, null, null, null, null, "[none]");
-    app.getUserHelper().createUser(user);
-    List<UserData> after = app.getUserHelper().getUserList();
+    app.user().create(user);
+    List<UserData> after = app.user().list();
     Assert.assertEquals(after.size(), before.size() + 1);
 
     before.add(user);
@@ -24,7 +24,6 @@ public class UserCreationTests extends TestBase{
     before.sort(byId);
     after.sort(byId);
     Assert.assertEquals(after, before);
-    app.logout();
   }
 
 }
