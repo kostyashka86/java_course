@@ -1,26 +1,28 @@
 package ru.java_course.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
+import ru.java_course.addressbook.model.Users;
 
 import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class UserCreationTests extends TestBase{
 
   @Test
   public void testUserCreation() {
 
-    Set<UserData> before = app.user().all();
+    Users before = app.user().all();
     UserData user = new UserData()
             .withName("Tatyana").withLastname("Krutikova").withGroup("[none]");
     app.user().create(user);
     Set<UserData> after = app.user().all();
-    Assert.assertEquals(after.size(), before.size() + 1);
+    assertThat(after.size(), equalTo(before.size() + 1));
 
-    user.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt());
-    before.add(user);
-    Assert.assertEquals(after, before);
+    assertThat(after, equalTo(
+            before.withAdded(user.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
   }
 
 }

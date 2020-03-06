@@ -6,10 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.java_course.addressbook.model.UserData;
+import ru.java_course.addressbook.model.Users;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static java.lang.Thread.sleep;
 
@@ -59,10 +58,6 @@ public class UserHelper extends HelperBase{
         returnToHomePage();
     }
 
-    private void initUserModificationById(int id) {
-        wd.findElement(By.xpath("//a[@href='edit.php?id='" + id + "']")).click();
-    }
-
     public void delete(UserData user) throws InterruptedException {
         selectUserById(user.getId());
         deleteSelectedUsers();
@@ -75,6 +70,10 @@ public class UserHelper extends HelperBase{
 
     public void selectUserById(int id) {
         wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
+    }
+
+    private void initUserModificationById(int id) {
+        wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']")).click();
     }
 
     public void initUserCreation() {
@@ -99,8 +98,8 @@ public class UserHelper extends HelperBase{
     }
 
 
-    public Set<UserData> all() {
-        Set<UserData> users = new HashSet<>();
+    public Users all() {
+        Users users = new Users();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             List<WebElement> cells = element.findElements(By.tagName("td"));
