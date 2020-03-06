@@ -4,27 +4,23 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 
 public class UserCreationTests extends TestBase{
 
   @Test
   public void testUserCreation() {
-    List<UserData> before = app.getUserHelper().getUserList();
-    app.getUserHelper().initUserCreation();
-    UserData user = new UserData("Tatyana", null, "Krutikova", null,
-            null, null, null, null, null, "[none]");
-    app.getUserHelper().createUser(user);
-    List<UserData> after = app.getUserHelper().getUserList();
+
+    Set<UserData> before = app.user().all();
+    UserData user = new UserData()
+            .withName("Tatyana").withLastname("Krutikova").withGroup("[none]");
+    app.user().create(user);
+    Set<UserData> after = app.user().all();
     Assert.assertEquals(after.size(), before.size() + 1);
 
+    user.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt());
     before.add(user);
-    Comparator<? super UserData> byId = Comparator.comparingInt(UserData::getId);
-    before.sort(byId);
-    after.sort(byId);
     Assert.assertEquals(after, before);
-    app.logout();
   }
 
 }

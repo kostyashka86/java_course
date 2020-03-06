@@ -33,7 +33,7 @@ public class ApplicationManager {
         }
 
         wd.manage().timeouts().implicitlyWait(  0, TimeUnit.SECONDS);
-        wd.get("http://localhost/addressbook/");
+        wd.get("http://localhost:8080/addressbook/");
         userHelper = new UserHelper(wd);
         groupHelper = new GroupHelper(wd);
         navigationHelper = new NavigationHelper(wd);
@@ -49,15 +49,15 @@ public class ApplicationManager {
         wd.quit();
     }
 
-    public GroupHelper getGroupHelper() {
+    public GroupHelper group() {
         return groupHelper;
     }
 
-    public UserHelper getUserHelper() {
+    public UserHelper user() {
         return userHelper;
     }
 
-    public NavigationHelper getNavigationHelper() {
+    public NavigationHelper goTo() {
         return navigationHelper;
     }
 }
