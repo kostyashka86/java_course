@@ -7,8 +7,6 @@ import ru.java_course.addressbook.model.UserData;
 
 import java.util.List;
 
-import static java.lang.Thread.sleep;
-
 public class UserDeletionTests extends TestBase{
 
   @BeforeMethod
@@ -16,8 +14,7 @@ public class UserDeletionTests extends TestBase{
 
     app.goTo().homePage();
     if (app.user().list().size() == 0) {
-      app.user().create(new UserData("Tatyana", null, "Krutikova", null,
-              null, null, null, null, null, "[none]"));
+      app.user().create(new UserData().withName("Tatyana").withLastname("Krutikova").withGroup("[none]"));
     }
   }
 

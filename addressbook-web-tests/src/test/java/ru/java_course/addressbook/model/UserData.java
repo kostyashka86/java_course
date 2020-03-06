@@ -3,16 +3,72 @@ package ru.java_course.addressbook.model;
 import java.util.Objects;
 
 public class UserData {
-    private int id;
-    private final String name;
-    private final String middlename;
-    private final String lastname;
-    private final String nickname;
-    private final String title;
-    private final String company;
-    private final String address;
-    private final String mobile;
-    private final String email;
+    private int id = Integer.MAX_VALUE;
+    private String name;
+    private String middlename;
+    private String lastname;
+    private String nickname;
+    private String title;
+    private String company;
+    private String address;
+    private String mobile;
+    private String email;
+    private String group;
+
+    public UserData withId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public UserData withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public UserData withMiddlename(String middlename) {
+        this.middlename = middlename;
+        return this;
+    }
+
+    public UserData withLastname(String lastname) {
+        this.lastname = lastname;
+        return this;
+    }
+
+    public UserData withNickname(String nickname) {
+        this.nickname = nickname;
+        return this;
+    }
+
+    public UserData withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public UserData withCompany(String company) {
+        this.company = company;
+        return this;
+    }
+
+    public UserData withAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public UserData withMobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
+    public UserData withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public UserData withGroup(String group) {
+        this.group = group;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -27,38 +83,6 @@ public class UserData {
         return Objects.hash(lastname);
     }
 
-    private String group;
-
-
-    public UserData(String name, String middlename, String lastname, String nickname, String title, String company,
-                    String address, String mobile, String email, String group) {
-        this.id = Integer.MAX_VALUE;
-        this.name = name;
-        this.middlename = middlename;
-        this.lastname = lastname;
-        this.nickname = nickname;
-        this.title = title;
-        this.company = company;
-        this.address = address;
-        this.mobile = mobile;
-        this.email = email;
-        this.group = group;
-    }
-
-    public UserData(int id, String name, String middlename, String lastname, String nickname, String title, String company,
-                    String address, String mobile, String email, String group) {
-        this.id = id;
-        this.name = name;
-        this.middlename = middlename;
-        this.lastname = lastname;
-        this.nickname = nickname;
-        this.title = title;
-        this.company = company;
-        this.address = address;
-        this.mobile = mobile;
-        this.email = email;
-        this.group = group;
-    }
 
     @Override
     public String toString() {
@@ -75,10 +99,6 @@ public class UserData {
                 ", email='" + email + '\'' +
                 ", group='" + group + '\'' +
                 '}';
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {

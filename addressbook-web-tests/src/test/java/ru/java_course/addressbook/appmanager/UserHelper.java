@@ -5,14 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.UserData;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
 
@@ -100,8 +96,7 @@ public class UserHelper extends HelperBase{
         for (WebElement element : elements) {
             List<WebElement> cells = element.findElements(By.tagName("td"));
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            UserData user = new UserData(id, cells.get(0).getText(), null, cells.get(1).getText(), null,
-                    null, null, cells.get(2).getText(), null, null, "[none]");
+            UserData user = new UserData().withId(id).withName(cells.get(0).getText()).withLastname(cells.get(1).getText()).withGroup("[none]");
             users.add(user);
         }
         return users;
