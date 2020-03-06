@@ -7,8 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.java_course.addressbook.model.UserData;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.lang.Thread.sleep;
 
@@ -39,43 +40,50 @@ public class UserHelper extends HelperBase{
 
         if (creation){
             new Select(wd.findElement((By.name("new_group")))). selectByVisibleText(userData.getGroup());
-        }
-        else {
+        } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
     }
+
     public void create(UserData user) {
         initUserCreation();
-        fillUserForm(user,true);
+        fillUserForm(user, true);
         submitUserCreation();
         returnToHomePage();
     }
-    public void modify(int index, UserData user) {
-        initUserModification(index);
+
+    public void modify(UserData user) {
+        initUserModificationById(user.getId());
         fillUserForm(user, false);
         submitUserModification();
         returnToHomePage();
     }
-    public void delete(int index) throws InterruptedException {
-        selectUser(index);
+
+    private void initUserModificationById(int id) {
+        wd.findElement(By.xpath("//a[@href='edit.php?id='" + id + "']")).click();
+    }
+
+    public void delete(UserData user) throws InterruptedException {
+        selectUserById(user.getId());
         deleteSelectedUsers();
         sleep(4000);
     }
+
     public boolean isThereAUser() {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public void selectUser(int index) {
-        wd.findElements(By.name("selected[]")).get(index).click();
+    public void selectUserById(int id) {
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
 
     public void initUserCreation() {
-      click(By.linkText("add new"));
+        click(By.linkText("add new"));
     }
 
     public void deleteSelectedUsers() {
-      click(By.xpath("//input[@value='Delete']"));
-      wd.switchTo().alert().accept();
+        click(By.xpath("//input[@value='Delete']"));
+        wd.switchTo().alert().accept();
     }
 
     public void submitUserModification() {
@@ -90,15 +98,17 @@ public class UserHelper extends HelperBase{
         return wd.findElements(By.name("selected[]")).size();
     }
 
-    public List<UserData> list() {
-        List<UserData> users = new ArrayList<UserData>();
+
+    public Set<UserData> all() {
+        Set<UserData> users = new HashSet<>();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             List<WebElement> cells = element.findElements(By.tagName("td"));
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            UserData user = new UserData().withId(id).withName(cells.get(0).getText()).withLastname(cells.get(1).getText()).withGroup("[none]");
+            UserData user = new UserData().withId(id).withName(cells.get(2).getText()).withLastname(cells.get(1).getText()).withGroup("[none]");
             users.add(user);
         }
         return users;
     }
+
 }
