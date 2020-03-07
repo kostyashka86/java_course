@@ -48,6 +48,7 @@ public class UserHelper extends HelperBase{
         initUserCreation();
         fillUserForm(user, true);
         submitUserCreation();
+        userCache = null;
         returnToHomePage();
     }
 
@@ -55,12 +56,14 @@ public class UserHelper extends HelperBase{
         initUserModificationById(user.getId());
         fillUserForm(user, false);
         submitUserModification();
+        userCache = null;
         returnToHomePage();
     }
 
     public void delete(UserData user) throws InterruptedException {
         selectUserById(user.getId());
         deleteSelectedUsers();
+        userCache = null;
         sleep(4000);
     }
 
@@ -97,17 +100,21 @@ public class UserHelper extends HelperBase{
         return wd.findElements(By.name("selected[]")).size();
     }
 
+    private Users userCache = null;
 
     public Users all() {
-        Users users = new Users();
+        if (userCache != null) {
+            return new Users(userCache);
+        }
+        userCache = new Users();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             List<WebElement> cells = element.findElements(By.tagName("td"));
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             UserData user = new UserData().withId(id).withName(cells.get(2).getText()).withLastname(cells.get(1).getText()).withGroup("[none]");
-            users.add(user);
+            userCache.add(user);
         }
-        return users;
+        return new Users(userCache);
     }
 
 }
