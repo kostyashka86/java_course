@@ -27,18 +27,20 @@ public class UserHelper extends HelperBase{
     }
 
     public void fillUserForm(UserData userData, boolean creation) {
-        type(By.name("firstname"), userData.getName());
+        type(By.name("firstname"), userData.getFirstname());
         type(By.name("middlename"), userData.getMiddlename());
         type(By.name("lastname"), userData.getLastname());
         type(By.name("nickname"), userData.getNickname());
         type(By.name("company"), userData.getCompany());
         type(By.name("title"), userData.getTitle());
         type(By.name("address"), userData.getAddress());
-        type(By.name("mobile"), userData.getMobile());
+        type(By.name("mobile"), userData.getMobilePhone());
+        type(By.name("home"), userData.getHomePhone());
+        type(By.name("work"), userData.getWorkPhone());
         type(By.name("email"), userData.getEmail());
 
-        if (creation){
-            new Select(wd.findElement((By.name("new_group")))). selectByVisibleText(userData.getGroup());
+        if (creation) {
+            new Select(wd.findElement((By.name("new_group")))).selectByVisibleText(userData.getGroup());
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -111,10 +113,25 @@ public class UserHelper extends HelperBase{
         for (WebElement element : elements) {
             List<WebElement> cells = element.findElements(By.tagName("td"));
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            UserData user = new UserData().withId(id).withName(cells.get(2).getText()).withLastname(cells.get(1).getText()).withGroup("[none]");
+            String lastname = cells.get(1).getText();
+            String firstname = cells.get(2).getText();
+            String allPhones = cells.get(5).getText();
+            UserData user = new UserData().withId(id).withFirstname(firstname).withLastname(lastname)
+                    .withAllPhones(allPhones);
             userCache.add(user);
         }
         return new Users(userCache);
     }
 
+    public UserData infoFromEditForm(UserData user) {
+        initUserModificationById(user.getId());
+        String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastname = wd.findElement(By.name("lastname")).getAttribute("value");
+        String home = wd.findElement(By.name("home")).getAttribute("value");
+        String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+        String work = wd.findElement(By.name("work")).getAttribute("value");
+        wd.navigate().back();
+        return new UserData().withId(user.getId()).withFirstname(firstname).withLastname(lastname)
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
+    }
 }

@@ -4,14 +4,17 @@ import java.util.Objects;
 
 public class UserData {
     private int id = Integer.MAX_VALUE;
-    private String name;
+    private String firstname;
     private String middlename;
     private String lastname;
     private String nickname;
     private String title;
     private String company;
     private String address;
-    private String mobile;
+    private String mobilePhone;
+    private String homePhone;
+    private String workPhone;
+    private String allPhones;
     private String email;
     private String group;
 
@@ -20,8 +23,8 @@ public class UserData {
         return this;
     }
 
-    public UserData withName(String name) {
-        this.name = name;
+    public UserData withFirstname(String firstname) {
+        this.firstname = firstname;
         return this;
     }
 
@@ -55,8 +58,23 @@ public class UserData {
         return this;
     }
 
-    public UserData withMobile(String mobile) {
-        this.mobile = mobile;
+    public UserData withMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+        return this;
+    }
+
+    public UserData withHomePhone(String homePhone) {
+        this.homePhone = homePhone;
+        return this;
+    }
+
+    public UserData withWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
+        return this;
+    }
+
+    public UserData withAllPhones(String allPhones) {
+        this.allPhones = allPhones;
         return this;
     }
 
@@ -70,29 +88,12 @@ public class UserData {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "UserData{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", middlename='" + middlename + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", title='" + title + '\'' +
-                ", company='" + company + '\'' +
-                ", address='" + address + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", email='" + email + '\'' +
-                ", group='" + group + '\'' +
-                '}';
-    }
-
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
     }
 
     public String getMiddlename() {
@@ -101,6 +102,18 @@ public class UserData {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public String getHomePhone() {
+        return homePhone;
+    }
+
+    public String getWorkPhone() {
+        return workPhone;
+    }
+
+    public String getAllPhones() {
+        return allPhones;
     }
 
     public String getNickname() {
@@ -119,8 +132,8 @@ public class UserData {
         return address;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getMobilePhone() {
+        return mobilePhone;
     }
 
     public String getEmail() {
@@ -131,18 +144,41 @@ public class UserData {
         return group;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserData userData = (UserData) o;
         return id == userData.id &&
-                Objects.equals(name, userData.name) &&
-                Objects.equals(lastname, userData.lastname);
+                Objects.equals(firstname, userData.firstname) &&
+                Objects.equals(lastname, userData.lastname) &&
+                Objects.equals(mobilePhone, userData.mobilePhone) &&
+                Objects.equals(homePhone, userData.homePhone) &&
+                Objects.equals(workPhone, userData.workPhone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastname);
+        return Objects.hash(id, firstname, lastname, mobilePhone, homePhone, workPhone);
+    }
+
+    @Override
+    public String toString() {
+        return "UserData{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", middlename='" + middlename + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", title='" + title + '\'' +
+                ", company='" + company + '\'' +
+                ", address='" + address + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", homePhone='" + homePhone + '\'' +
+                ", workPhone='" + workPhone + '\'' +
+                ", email='" + email + '\'' +
+                ", group='" + group + '\'' +
+                '}';
     }
 }

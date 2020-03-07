@@ -16,7 +16,7 @@ public class UserModificationTests extends TestBase {
         app.goTo().homePage();
         if (app.user().all().size() == 0) {
             app.user().create(new UserData().
-                    withName("Konstantin").withLastname("Zhuravlev").withGroup("[none]"));
+                    withFirstname("Konstantin").withLastname("Zhuravlev").withGroup("[none]"));
         }
     }
 
@@ -26,7 +26,7 @@ public class UserModificationTests extends TestBase {
         Users before = app.user().all();
         UserData modifiedUser = before.iterator().next();
         UserData user = new UserData()
-                .withId(modifiedUser.getId()).withName("Gleb").withLastname("Zhuravlev").withGroup("[none]");
+                .withId(modifiedUser.getId()).withFirstname("Gleb").withLastname("Zhuravlev").withGroup("[none]");
         app.user().modify(user);
         assertThat(app.group().count(), equalTo(before.size()));
         Users after = app.user().all();

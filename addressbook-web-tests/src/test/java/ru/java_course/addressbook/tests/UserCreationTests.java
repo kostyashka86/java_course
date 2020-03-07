@@ -15,8 +15,8 @@ public class UserCreationTests extends TestBase{
   public void testUserCreation() {
 
     Users before = app.user().all();
-    UserData user = new UserData()
-            .withName("Tatyana").withLastname("Krutikova").withGroup("[none]");
+      UserData user = new UserData()
+              .withFirstname("Tatyana").withLastname("Krutikova").withGroup("[none]");
     app.user().create(user);
     Set<UserData> after = app.user().all();
     assertThat(app.user().count(), equalTo(before.size() + 1));
@@ -28,9 +28,9 @@ public class UserCreationTests extends TestBase{
   @Test
   public void testBadUserCreation() {
 
-    Users before = app.user().all();
-    UserData user = new UserData()
-            .withName("Tatyana'").withLastname("Krutikova").withGroup("[none]");
+      Users before = app.user().all();
+      UserData user = new UserData()
+              .withFirstname("Tatyana'").withLastname("Krutikova").withGroup("[none]");
     app.user().create(user);
     assertThat(app.user().count(), equalTo(before.size()));
     Set<UserData> after = app.user().all();
