@@ -1,6 +1,5 @@
 package ru.java_course.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
@@ -29,8 +28,8 @@ public class UserModificationTests extends TestBase {
         UserData user = new UserData()
                 .withId(modifiedUser.getId()).withName("Gleb").withLastname("Zhuravlev").withGroup("[none]");
         app.user().modify(user);
+        assertThat(app.group().count(), equalTo(before.size()));
         Users after = app.user().all();
-        Assert.assertEquals(after.size(), before.size());
         assertThat(after, equalTo(before.without(modifiedUser).withAdded(user)));
     }
 
