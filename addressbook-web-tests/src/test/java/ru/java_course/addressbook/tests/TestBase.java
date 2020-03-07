@@ -10,15 +10,12 @@ public class TestBase {
     protected static final ApplicationManager app = new ApplicationManager(BrowserType.FIREFOX);
 
     @BeforeSuite(alwaysRun = true)
-    public void setUp() throws Exception {
+    public void setUp() {
         app.init();
     }
 
-
     @AfterSuite(alwaysRun = true)
-    public void tearDown() throws Exception {
+    public void tearDown() {
         app.stop();
     }
-
-
 }

@@ -71,29 +71,6 @@ public class UserData {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserData userData = (UserData) o;
-        return id == userData.id &&
-                Objects.equals(name, userData.name) &&
-                Objects.equals(middlename, userData.middlename) &&
-                Objects.equals(lastname, userData.lastname) &&
-                Objects.equals(nickname, userData.nickname) &&
-                Objects.equals(title, userData.title) &&
-                Objects.equals(company, userData.company) &&
-                Objects.equals(address, userData.address) &&
-                Objects.equals(mobile, userData.mobile) &&
-                Objects.equals(email, userData.email) &&
-                Objects.equals(group, userData.group);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, middlename, lastname, nickname, title, company, address, mobile, email, group);
-    }
-
-    @Override
     public String toString() {
         return "UserData{" +
                 "id='" + id + '\'' +
@@ -152,5 +129,20 @@ public class UserData {
 
     public String getGroup() {
         return group;
-        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserData userData = (UserData) o;
+        return id == userData.id &&
+                Objects.equals(name, userData.name) &&
+                Objects.equals(lastname, userData.lastname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastname);
+    }
 }
