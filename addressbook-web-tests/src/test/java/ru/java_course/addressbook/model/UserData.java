@@ -18,6 +18,7 @@ public class UserData {
     private String emailTwo;
     private String emailThree;
     private String allEmails;
+    @Expose
     private String group;
     private String address;
 

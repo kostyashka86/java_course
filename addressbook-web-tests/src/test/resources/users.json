@@ -1,14 +1,17 @@
 [
   {
     "firstname": "Tatyana0",
-    "lastname": "Krutikova0"
+    "lastname": "Krutikova0",
+    "group": "[none]"
   },
   {
     "firstname": "Tatyana1",
-    "lastname": "Krutikova1"
+    "lastname": "Krutikova1",
+    "group": "[none]"
   },
   {
     "firstname": "Tatyana2",
-    "lastname": "Krutikova2"
+    "lastname": "Krutikova2",
+    "group": "[none]"
   }
 ]
