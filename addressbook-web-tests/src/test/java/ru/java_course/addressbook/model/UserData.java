@@ -1,10 +1,14 @@
 package ru.java_course.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 
 public class UserData {
     private int id = Integer.MAX_VALUE;
+    @Expose
     private String firstname;
+    @Expose
     private String lastname;
     private String mobilePhone;
     private String homePhone;

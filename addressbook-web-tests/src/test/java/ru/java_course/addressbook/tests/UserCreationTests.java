@@ -5,6 +5,10 @@ import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.UserData;
 import ru.java_course.addressbook.model.Users;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,14 +20,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class UserCreationTests extends TestBase {
 
   @DataProvider
-  public Iterator<Object[]> validUsers() {
+  public Iterator<Object[]> validUsers() throws IOException {
     List<Object[]> list = new ArrayList<Object[]>();
-    list.add(new Object[]{new UserData().withFirstname("Kostya").withLastname("Shishmagaev")
-            .withAllEmails("").withAllPhones("").withAddress("").withGroup("[none]")});
-    list.add(new Object[]{new UserData().withFirstname("Tanya").withLastname("Shishmagaeva")
-            .withAllEmails("").withAllPhones("").withAddress("").withGroup("[none]")});
-    list.add(new Object[]{new UserData().withFirstname("Gleb").withLastname("Shishmagaev")
-            .withAllEmails("").withAllPhones("").withAddress("").withGroup("[none]")});
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/users.csv")));
+    String line = reader.readLine();
+    while (line != null) {
+      String[] split = line.split(";");
+      list.add(new Object[]{new UserData().withFirstname(split[0]).withLastname(split[1]).withGroup(split[2])});
+      line = reader.readLine();
+    }
     return list.iterator();
   }
 
@@ -34,8 +39,8 @@ public class UserCreationTests extends TestBase {
     Set<UserData> after = app.user().all();
     assertThat(app.user().count(), equalTo(before.size() + 1));
 
-    assertThat(after, equalTo(
-            before.withAdded(user.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+    assertThat(((Users) after).without(user.withGroup(null).withAddress("").withAllPhones("").withAllEmails("")), equalTo(
+            before.withAdded(user.withId(after.stream().mapToInt(UserData::getId).max().getAsInt()))));
   }
 
   @Test(enabled = false)
