@@ -23,17 +23,18 @@ public class UserCreationTests extends TestBase {
 
   @DataProvider
   public Iterator<Object[]> validUsersFromJson() throws IOException {
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/users.json")));
-    String json = "";
-    String line = reader.readLine();
-    while (line != null) {
-      json += line;
-      line = reader.readLine();
+    try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/users.json")))) {
+      String json = "";
+      String line = reader.readLine();
+      while (line != null) {
+        json += line;
+        line = reader.readLine();
+      }
+      Gson gson = new Gson();
+      List<UserData> users = gson.fromJson(json, new TypeToken<List<UserData>>() {
+      }.getType());
+      return users.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
-    Gson gson = new Gson();
-    List<UserData> users = gson.fromJson(json, new TypeToken<List<UserData>>() {
-    }.getType());
-    return users.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
   @Test(dataProvider = "validUsersFromJson")
