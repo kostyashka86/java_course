@@ -41,10 +41,10 @@ public class UserCreationTests extends TestBase {
   public void testUserCreation(UserData user) {
     Users before = app.user().all();
     app.user().create(user);
-    Set<UserData> after = app.user().all();
+    Users after = app.user().all();
     assertThat(app.user().count(), equalTo(before.size() + 1));
 
-    assertThat(((Users) after).without(user.withGroup(null).withAddress("").withAllPhones("").withAllEmails("")), equalTo(
+    assertThat(after.without(user.withGroup(null).withAddress("").withAllPhones("").withAllEmails("")), equalTo(
             before.withAdded(user.withId(after.stream().mapToInt(UserData::getId).max().getAsInt()))));
   }
 
