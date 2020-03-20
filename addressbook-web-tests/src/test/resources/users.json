@@ -2,16 +2,37 @@
   {
     "firstname": "Tatyana0",
     "lastname": "Krutikova0",
-    "group": "[none]"
+    "mobilePhone": "7555",
+    "homePhone": "333333",
+    "workPhone": "1234222",
+    "email": "123@321",
+    "emailTwo": "ddf@dsd",
+    "emailThree": "1w1w@dd",
+    "group": "[none]",
+    "address": "moscow"
   },
   {
     "firstname": "Tatyana1",
     "lastname": "Krutikova1",
-    "group": "[none]"
+    "mobilePhone": "7555",
+    "homePhone": "333333",
+    "workPhone": "1234222",
+    "email": "123@321",
+    "emailTwo": "ddf@dsd",
+    "emailThree": "1w1w@dd",
+    "group": "[none]",
+    "address": "moscow"
   },
   {
     "firstname": "Tatyana2",
     "lastname": "Krutikova2",
-    "group": "[none]"
+    "mobilePhone": "7555",
+    "homePhone": "333333",
+    "workPhone": "1234222",
+    "email": "123@321",
+    "emailTwo": "ddf@dsd",
+    "emailThree": "1w1w@dd",
+    "group": "[none]",
+    "address": "moscow"
   }
 ]

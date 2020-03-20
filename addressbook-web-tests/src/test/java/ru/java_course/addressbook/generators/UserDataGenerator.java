@@ -68,7 +68,10 @@ public class UserDataGenerator {
         List<UserData> users = new ArrayList<UserData>();
         for (int i = 0; i < count; i++) {
             users.add(new UserData().withFirstname(String.format("Tatyana%s", i))
-                    .withLastname(String.format("Krutikova%s", i)).withGroup("[none]"));
+                    .withLastname(String.format("Krutikova%s", i)).withEmail("123@321")
+                    .withEmailTwo("ddf@dsd").withEmailThree("1w1w@dd")
+                    .withAddress("moscow").withWorkPhone("1234222")
+                    .withMobilePhone("7555").withHomePhone("333333").withGroup("[none]"));
         }
         return users;
     }

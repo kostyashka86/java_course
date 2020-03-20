@@ -18,23 +18,29 @@ public class UserData {
     @Expose
     @Column(name = "lastname")
     private String lastname;
+    @Expose
     @Column(name = "mobile")
     @Type(type = "text")
     private String mobilePhone;
+    @Expose
     @Column(name = "home")
     @Type(type = "text")
     private String homePhone;
+    @Expose
     @Column(name = "work")
     @Type(type = "text")
     private String workPhone;
     @Transient
     private String allPhones;
+    @Expose
     @Column(name = "email")
     @Type(type = "text")
     private String email;
+    @Expose
     @Column(name = "email2")
     @Type(type = "text")
     private String emailTwo;
+    @Expose
     @Column(name = "email3")
     @Type(type = "text")
     private String emailThree;
@@ -43,6 +49,7 @@ public class UserData {
     @Expose
     @Transient
     private String group;
+    @Expose
     @Column(name = "address")
     @Type(type = "text")
     private String address;

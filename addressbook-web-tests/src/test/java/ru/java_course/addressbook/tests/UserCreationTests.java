@@ -39,24 +39,24 @@ public class UserCreationTests extends TestBase {
 
   @Test(dataProvider = "validUsersFromJson")
   public void testUserCreation(UserData user) {
-    Users before = app.user().all();
+    Users before = app.db().users();
     app.user().create(user);
-    Users after = app.user().all();
+    Users after = app.db().users();
     assertThat(app.user().count(), equalTo(before.size() + 1));
 
-    assertThat(after.without(user.withGroup(null).withAddress("").withAllPhones("").withAllEmails("")), equalTo(
+    assertThat(after.without(user.withGroup(null)), equalTo(
             before.withAdded(user.withId(after.stream().mapToInt(UserData::getId).max().getAsInt()))));
   }
 
   @Test(enabled = false)
   public void testBadUserCreation() {
 
-      Users before = app.user().all();
-      UserData user = new UserData()
-              .withFirstname("Tatyana'").withLastname("Krutikova").withGroup("[none]");
+    Users before = app.db().users();
+    UserData user = new UserData()
+            .withFirstname("Tatyana'").withLastname("Krutikova").withGroup("[none]");
     app.user().create(user);
     assertThat(app.user().count(), equalTo(before.size()));
-    Set<UserData> after = app.user().all();
+    Set<UserData> after = app.db().users();
     assertThat(after, equalTo(before));
   }
 }
