@@ -16,7 +16,7 @@ public class UserAddressTests extends TestBase {
         if (app.user().all().size() == 0) {
             app.user().create(new UserData().
                     withFirstname("Konstantin").withLastname("Zhuravlev")
-                    .withAddress("Moscow, Red Square, 22").withGroup("[none]"));
+                    .withAddress("Moscow, Red Square, 22"));
         }
     }
 

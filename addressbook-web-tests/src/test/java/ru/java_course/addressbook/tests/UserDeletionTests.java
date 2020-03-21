@@ -16,7 +16,7 @@ public class UserDeletionTests extends TestBase {
         if (app.db().users().size() == 0) {
             app.goTo().homePage();
             app.user().create(new UserData().
-                    withFirstname("Konstantin").withLastname("Zhuravlev").withGroup("[none]"));
+                    withFirstname("Konstantin").withLastname("Zhuravlev"));
         }
     }
 

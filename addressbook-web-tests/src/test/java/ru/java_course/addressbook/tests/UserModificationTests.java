@@ -15,7 +15,7 @@ public class UserModificationTests extends TestBase {
         if (app.db().users().size() == 0) {
             app.goTo().homePage();
             app.user().create(new UserData().
-                    withFirstname("Konstantin").withLastname("Zhuravlev").withGroup("[none]"));
+                    withFirstname("Konstantin").withLastname("Zhuravlev"));
         }
     }
 
@@ -27,11 +27,11 @@ public class UserModificationTests extends TestBase {
         UserData user = new UserData()
                 .withId(modifiedUser.getId()).withFirstname("Gleb").withLastname("Zhuravlev").withEmail("123@321")
                 .withEmailTwo("ddf@dsd").withEmailThree("1w1w@dd").withAddress("moscow").withWorkPhone("1234222")
-                .withMobilePhone("7555").withHomePhone("333333").withGroup("[none]");
+                .withMobilePhone("7555").withHomePhone("333333");
         app.user().modify(user);
         assertThat(app.group().count(), equalTo(before.size()));
         Users after = app.db().users();
-        assertThat(after, equalTo(before.without(modifiedUser).withAdded(user.withGroup(null))));
+        assertThat(after, equalTo(before.without(modifiedUser).withAdded(user)));
         verifyUserListInUI();
     }
 

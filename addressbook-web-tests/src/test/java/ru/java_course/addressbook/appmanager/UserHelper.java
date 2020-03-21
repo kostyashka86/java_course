@@ -38,7 +38,10 @@ public class UserHelper extends HelperBase{
         type(By.name("email3"), userData.getEmailThree());
 
         if (creation) {
-            new Select(wd.findElement((By.name("new_group")))).selectByVisibleText(userData.getGroup());
+            if (userData.getGroups().size() > 0) {
+                Assert.assertTrue(userData.getGroups().size() == 1);
+                new Select(wd.findElement((By.name("new_group")))).selectByVisibleText(userData.getGroups().iterator().next().getName());
+            }
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -65,6 +68,30 @@ public class UserHelper extends HelperBase{
         deleteSelectedUsers();
         userCache = null;
         sleep(4000);
+    }
+
+    public void deleteAll() {
+        selectAllUsers();
+        deleteSelectedUsers();
+        returnToHomePage();
+    }
+
+    private void selectAllUsers() {
+        wd.findElement(By.id("MassCB")).click();
+    }
+
+    public void addUserToGroup(UserData user) {
+        selectUserById(user.getId());
+        add();
+        returnBack();
+    }
+
+    private void returnBack() {
+        wd.findElement(By.linkText("group page \"test1\"")).click();
+    }
+
+    private void add() {
+        wd.findElement(By.name("add")).click();
     }
 
     public boolean isThereAUser() {

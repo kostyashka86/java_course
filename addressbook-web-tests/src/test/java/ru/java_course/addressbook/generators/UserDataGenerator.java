@@ -71,7 +71,7 @@ public class UserDataGenerator {
                     .withLastname(String.format("Krutikova%s", i)).withEmail("123@321")
                     .withEmailTwo("ddf@dsd").withEmailThree("1w1w@dd")
                     .withAddress("moscow").withWorkPhone("1234222")
-                    .withMobilePhone("7555").withHomePhone("333333").withGroup("[none]"));
+                    .withMobilePhone("7555").withHomePhone("333333"));
         }
         return users;
     }

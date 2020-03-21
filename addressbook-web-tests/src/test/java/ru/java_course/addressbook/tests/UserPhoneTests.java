@@ -19,8 +19,7 @@ public class UserPhoneTests extends TestBase {
         if (app.user().all().size() == 0) {
             app.user().create(new UserData().
                     withFirstname("Konstantin").withLastname("Zhuravlev")
-                    .withHomePhone("+7(495)1234567").withMobilePhone("909-123-45-67").withWorkPhone("1234567890")
-                    .withGroup("[none]"));
+                    .withHomePhone("+7(495)1234567").withMobilePhone("909-123-45-67").withWorkPhone("1234567890"));
         }
     }
 

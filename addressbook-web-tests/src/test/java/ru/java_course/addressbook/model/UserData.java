@@ -4,56 +4,71 @@ import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "addressbook")
 public class UserData {
+
     @Id
     @Column(name = "id")
     private int id = Integer.MAX_VALUE;
+
     @Expose
     @Column(name = "firstname")
     private String firstname;
+
     @Expose
     @Column(name = "lastname")
     private String lastname;
+
     @Expose
     @Column(name = "mobile")
     @Type(type = "text")
     private String mobilePhone;
+
     @Expose
     @Column(name = "home")
     @Type(type = "text")
     private String homePhone;
+
     @Expose
     @Column(name = "work")
     @Type(type = "text")
     private String workPhone;
+
     @Transient
     private String allPhones;
+
     @Expose
     @Column(name = "email")
     @Type(type = "text")
     private String email;
+
     @Expose
     @Column(name = "email2")
     @Type(type = "text")
     private String emailTwo;
+
     @Expose
     @Column(name = "email3")
     @Type(type = "text")
     private String emailThree;
+
     @Transient
     private String allEmails;
-    @Expose
-    @Transient
-    private String group;
+
     @Expose
     @Column(name = "address")
     @Type(type = "text")
     private String address;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "address_in_groups",
+            joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private Set<GroupData> groups = new HashSet<GroupData>();
 
     public UserData withId(int id) {
         this.id = id;
@@ -115,9 +130,8 @@ public class UserData {
         return this;
     }
 
-    public UserData withGroup(String group) {
-        this.group = group;
-        return this;
+    public Groups getGroups() {
+        return new Groups(groups);
     }
 
     public int getId() {
@@ -168,9 +182,6 @@ public class UserData {
         return address;
     }
 
-    public String getGroup() {
-        return group;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -188,13 +199,12 @@ public class UserData {
                 Objects.equals(emailTwo, userData.emailTwo) &&
                 Objects.equals(emailThree, userData.emailThree) &&
                 Objects.equals(allEmails, userData.allEmails) &&
-                Objects.equals(group, userData.group) &&
                 Objects.equals(address, userData.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, mobilePhone, homePhone, workPhone, allPhones, email, emailTwo, emailThree, allEmails, group, address);
+        return Objects.hash(id, firstname, lastname, mobilePhone, homePhone, workPhone, allPhones, email, emailTwo, emailThree, allEmails, address);
     }
 
     @Override
@@ -211,8 +221,12 @@ public class UserData {
                 ", emailTwo='" + emailTwo + '\'' +
                 ", emailThree='" + emailThree + '\'' +
                 ", allEmails='" + allEmails + '\'' +
-                ", group='" + group + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    public UserData inGroup(GroupData group) {
+        groups.add(group);
+        return this;
     }
 }
