@@ -58,5 +58,6 @@ public class UserCreationTests extends TestBase {
     assertThat(app.user().count(), equalTo(before.size()));
     Set<UserData> after = app.db().users();
     assertThat(after, equalTo(before));
+    verifyUserListInUI();
   }
 }
