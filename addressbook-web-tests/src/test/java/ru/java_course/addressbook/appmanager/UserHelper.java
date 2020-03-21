@@ -70,10 +70,10 @@ public class UserHelper extends HelperBase{
         sleep(4000);
     }
 
-    public void deleteAll() {
+    public void deleteAll() throws InterruptedException {
         selectAllUsers();
         deleteSelectedUsers();
-        returnToHomePage();
+        sleep(4000);
     }
 
     private void selectAllUsers() {
