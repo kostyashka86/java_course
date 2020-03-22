@@ -12,7 +12,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class UserHelper extends HelperBase{
+public class UserHelper extends HelperBase {
 
     public UserHelper(WebDriver wd) {
         super(wd);
@@ -20,6 +20,10 @@ public class UserHelper extends HelperBase{
 
     public void returnToHomePage() {
         click(By.linkText("home page"));
+    }
+
+    public void returnToHome() {
+        click(By.linkText("home"));
     }
 
     public void submitUserCreation() {
@@ -70,28 +74,8 @@ public class UserHelper extends HelperBase{
         sleep(4000);
     }
 
-    public void deleteAll() throws InterruptedException {
-        selectAllUsers();
-        deleteSelectedUsers();
-        sleep(4000);
-    }
-
-    private void selectAllUsers() {
-        wd.findElement(By.id("MassCB")).click();
-    }
-
-    public void addUserToGroup(UserData user) {
-        selectUserById(user.getId());
-        add();
-        returnBack();
-    }
-
-    private void returnBack() {
-        wd.findElement(By.linkText("group page \"test1\"")).click();
-    }
-
-    private void add() {
-        wd.findElement(By.name("add")).click();
+    public void selectUserGroupById(int id) {
+        wd.findElement(By.xpath(String.format("//form[@id='right']//select[@name='group']//option[@value='%s']", id))).click();
     }
 
     public boolean isThereAUser() {
@@ -166,5 +150,29 @@ public class UserHelper extends HelperBase{
                 .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work)
                 .withEmail(email).withEmailTwo(emailTwo).withEmailThree(emailThree)
                 .withAddress(address);
+    }
+
+    public void selectUserAll() {
+        wd.findElement(By.xpath(String.format("//form[@id='right']//select[@name='group']//option[@value='']"))).click();
+        userCache = null;
+    }
+
+    public void addToGroup(int groupId, int userId) {
+        selectGroupById(groupId);
+        initAddUserToGroup();
+        userCache = null;
+        returnToSelectedGropePage(groupId);
+    }
+
+    public void selectGroupById(int id) {
+        wd.findElement(By.xpath(String.format("//div[@class='right']//select[@name='to_group']//option[@value='%s']", id))).click();
+    }
+
+    public void initAddUserToGroup() {
+        click(By.name("add"));
+    }
+
+    public void returnToSelectedGropePage(int id) {
+        click(By.xpath(String.format("//div[@class='msgbox']//i//a[@href='./?group=%s']", id)));
     }
 }
