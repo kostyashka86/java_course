@@ -83,7 +83,7 @@ public class UserHelper extends HelperBase {
     }
 
     public void selectUserById(int id) {
-        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
+        wd.findElement(By.cssSelector(String.format("input[value ='%s']", id))).click();
     }
 
     private void initUserModificationById(int id) {
@@ -174,5 +174,12 @@ public class UserHelper extends HelperBase {
 
     public void returnToSelectedGropePage(int id) {
         click(By.xpath(String.format("//div[@class='msgbox']//i//a[@href='./?group=%s']", id)));
+    }
+
+    public void deleteFromGroup(int userId, int groupId) {
+        selectUserById(userId);
+        click(By.name("remove"));
+        userCache = null;
+        returnToSelectedGropePage(groupId);
     }
 }
