@@ -1,5 +1,6 @@
 package ru.java_course.addressbook.tests;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.Groups;
@@ -8,96 +9,65 @@ import ru.java_course.addressbook.model.Users;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class AddUserToGroupTests extends TestBase {
 
-    private GroupData groupData;
-    private UserData userData;
-    private int userId;
-    private int groupId;
-
-    /*@DataProvider()
-    public static Iterator<Object[]> validUsersFromJson() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/users.json")))) {
-            String json = "";
-            String line = reader.readLine();
-            while (line != null) {
-                json += line;
-                line = reader.readLine();
-            }
-            Gson gson = new Gson();
-            List<UserData> users = gson.fromJson(json, new TypeToken<List<UserData>>() {
-            }.getType());
-            return users.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
-        }
-    }
-    @DataProvider
-    public static Iterator<Object[]> validGroupsFromJson() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")))) {
-            String json = "";
-            String line = reader.readLine();
-            while (line != null) {
-                json += line;
-                line = reader.readLine();
-            }
-            Gson gson = new Gson();
-            List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>() {
-            }.getType());
-            return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
-        }
-    }
-
-    @DataProvider
-    public static Object[][] datafromJson() throws IOException {
-        return new Object[][]{{validUsersFromJson().next()[0], validGroupsFromJson().next()[0]}};
-    }*/
-
-    public void ensurePreconditions(UserData user, GroupData group) {
-        app.goTo().homePage();
-        app.user().selectUserAll();
-        Users users = app.db().users();
+    @BeforeMethod
+    public void ensurePreconditions() {
         if (app.db().users().size() == 0) {
             app.goTo().homePage();
-            app.user().create(user);
-            userData = app.db().users().iterator().next();
-            userId = userData.getId();
-        } else {
-            userId = users.iterator().next().getId();
-            userData = app.db().userById(userId);
+            app.user().create(new UserData().withFirstname("Kostya").withLastname("Zhuravlev"));
         }
-        Groups groups = app.db().groups();
-        if (groups.size() > 0) {
-            for (GroupData item : groups) {
-                if (!userData.getGroups().contains(item)) {
-                    groupData = group;
-                    groupId = groupData.getId();
-                    break;
-                }
-            }
-        }
-        if (groupData == null) {
+        if (app.db().groups().size() == 0) {
             app.goTo().groupPage();
-            groupData = group;
-            app.group().create(groupData);
-            groupId = app.db().groups().stream().mapToInt((g) -> g.getId()).max().getAsInt();
-            groupData.withId(groupId);
+            app.group().create(new GroupData().withName("test1"));
         }
     }
 
     @Test
-    public void testAddUserToGroup(UserData user, GroupData group) {
-        ensurePreconditions(user, group);
+    public void testAddUserToGroup() {
+
+        Users allUsers = app.db().users();
+        Groups allGroups = app.db().groups();
+
+        UserData selectedUser = null;
+        GroupData selectedGroup = null;
+        UserData userAfter = null;
+
+        for (UserData oneOfUserToAdd : allUsers) {
+            Groups groupsOfUserToAdd = oneOfUserToAdd.getGroups();
+            if (groupsOfUserToAdd.size() != allGroups.size()) {
+                allGroups.removeAll(groupsOfUserToAdd); //находим свободную группу
+                selectedGroup = allGroups.iterator().next(); //выбираем первую свободную
+                selectedUser = oneOfUserToAdd; //присваеваем
+                break; //чтобы не перебирать все
+            }
+        }
+        if (selectedGroup == null) {
+            UserData user = new UserData()
+                    .withFirstname("new").withLastname("Kostya");
+            app.user().create(user);
+            Users after = app.db().users();
+            user.withId(after.stream().mapToInt((g) -> (g).getId()).max().getAsInt()); //берем контакт с максимальным ID
+            selectedUser = user;  //далее selected User не изменяется и является контактом Before.
+            selectedGroup = allGroups.iterator().next();
+        }
+
         app.goTo().homePage();
-        app.user().selectUserGroupById(groupId);
-        Users before = app.db().groupUsers(groupId);
-        app.goTo().homePage();
-        app.user().selectUserAll();
-        app.user().selectUserById(userId);
-        app.user().addToGroup(groupId, userId);
-        assertThat(app.user().count(), equalTo(before.size() + 1));
-        Users after = app.db().groupUsers(groupId);
-        assertThat(after, equalTo(
-                before.withAdded(user.withId(after.stream().mapToInt(UserData::getId).max().getAsInt()))));
-        verifyUserListInUI();
+        app.user().allGroupsInUserPage(); //на всякий
+        app.user().addInGroupFinal(selectedUser, selectedGroup);
+
+        //проверки
+        Users allUsersAfter = app.db().users(); //заново получаем из БД инфу для сравнения.
+        for (UserData oneOfUserAfter : allUsersAfter) {
+            if (oneOfUserAfter.getId() == selectedUser.getId()) { //ищем контакт с таким же ID
+                userAfter = oneOfUserAfter;
+                break;
+            }
+        }
+        assertEquals(selectedUser.getGroups().size(), userAfter.getGroups().size() - 1);
+        assertThat(selectedUser.getGroups(), equalTo(userAfter.getGroups().without(selectedGroup)));
+
     }
 }

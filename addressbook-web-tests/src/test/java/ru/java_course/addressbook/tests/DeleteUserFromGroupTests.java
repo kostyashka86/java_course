@@ -1,113 +1,77 @@
 package ru.java_course.addressbook.tests;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.Groups;
 import ru.java_course.addressbook.model.UserData;
 import ru.java_course.addressbook.model.Users;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class DeleteUserFromGroupTests extends TestBase {
 
-    private GroupData groupData;
-    private UserData userData;
-    int userId;
-    int groupId;
-
-    @DataProvider()
-    public static Iterator<Object[]> validUsersFromJson() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/users.json")))) {
-            String json = "";
-            String line = reader.readLine();
-            while (line != null) {
-                json += line;
-                line = reader.readLine();
-            }
-            Gson gson = new Gson();
-            List<UserData> users = gson.fromJson(json, new TypeToken<List<UserData>>() {
-            }.getType());
-            return users.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
-        }
-    }
-
-    @DataProvider
-    public static Iterator<Object[]> validGroupsFromJson() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")))) {
-            String json = "";
-            String line = reader.readLine();
-            while (line != null) {
-                json += line;
-                line = reader.readLine();
-            }
-            Gson gson = new Gson();
-            List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>() {
-            }.getType());
-            return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
-        }
-    }
-
-    @DataProvider
-    public static Object[][] datafromJson() throws IOException {
-        return new Object[][]{{validUsersFromJson().next()[0], validGroupsFromJson().next()[0]}};
-    }
-
-    public void ensurePreconditionsDeleteFromGroup(UserData user, GroupData group) {
-        app.goTo().groupPage();
-        Groups groups = app.db().groups();
-        if (app.db().groups().size() == 0) {
-            app.group().create(group);
-            groupData = app.db().groups().iterator().next();
-            groupId = groupData.getId();
-        } else {
-            groupId = groups.iterator().next().getId();
-            groupData = app.db().groupById(groupId);
-        }
-        app.goTo().homePage();
-        Users users = app.db().users();
-        app.user().selectUserGroupById(groupId);
-        Users groupUsers = app.db().groupUsers(groupId);
-        if (users.size() > 0) {
-            for (UserData item : users) {
-                if (groupUsers.contains(item)) {
-                    userData = user;
-                    userId = userData.getId();
-                    break;
-                }
-            }
-        }
-        if (userData == null) {
+    @BeforeMethod
+    public void ensurePreconditions() {
+        if (app.db().users().size() == 0) {
             app.goTo().homePage();
-            userData = user;
-            app.user().create(userData.inGroup(groupData).withId(groupId));
-            userId = app.db().users().stream().mapToInt((g) -> g.getId()).max().getAsInt();
-            userData.withId(userId);
+            app.user().create(new UserData().withFirstname("Kostya").withLastname("Zhuravlev"));
+        }
+        if (app.db().groups().size() == 0) {
+            app.goTo().groupPage();
+            app.group().create(new GroupData().withName("test1"));
         }
     }
 
-    @Test(dataProvider = "datafromJson")
-    public void testDeleteUserFromGroup(UserData user, GroupData group) {
-        ensurePreconditionsDeleteFromGroup(user, group);
-        app.goTo().homePage();
-        app.user().selectUserGroupById(groupId);
-        Users before = app.db().groupUsers(groupId);
-        app.user().deleteFromGroup(userId, groupId);
-        Users after = app.db().groupUsers(groupId);
-        assertThat(app.user().count(), equalTo(before.size() - 1));
-        assertThat(after, equalTo(before.without(user)));
-        verifyUserListInUI();
-    }
+    @Test
+    public void testDeleteUserFromGroup() {
 
+        UserData userAfter = null;
+        UserData userBefore = null;
+        GroupData selectedGroup = null;
+        UserData selectedUser;
+
+        Groups groups = app.db().groups();
+        Users allUsers = app.db().users();
+        app.goTo().homePage();
+        selectedUser = allUsers.iterator().next(); //случайный контакт для случай (selectedUser.getGroups().size() == 0)
+
+        for (UserData oneOfUserToDelete : allUsers) {
+            Groups groupsOfUserToDelete = oneOfUserToDelete.getGroups();
+            if (groupsOfUserToDelete.size() > 0) {
+                selectedUser = oneOfUserToDelete;
+                selectedGroup = selectedUser.getGroups().iterator().next(); //можно дальше не искать
+                break;
+            }
+        }
+
+        if (selectedUser.getGroups().size() == 0) {
+            selectedGroup = groups.iterator().next();
+            app.user().addInGroupFinal(selectedUser, selectedGroup);
+        }
+
+        Users allUsersBefore = app.db().users(); // обновили
+        for (UserData oneOfUserBefore : allUsersBefore) {
+            if (oneOfUserBefore.getId() == selectedUser.getId()) {
+                userBefore = oneOfUserBefore;
+                break;
+            }
+        }
+
+        app.goTo().homePage();
+        app.user().deleteFromGroupFinal(selectedUser, selectedGroup);
+
+        Users allUsersAfter = app.db().users(); //еще раз обновили
+        for (UserData OneOfUserAfter : allUsersAfter) {
+            if (OneOfUserAfter.getId() == selectedUser.getId()) {
+                userAfter = OneOfUserAfter;
+                break;
+            }
+        }
+        //проверки
+        assertEquals(userBefore.getGroups().size(), userAfter.getGroups().size() + 1);
+        assertThat(userBefore.getGroups(), equalTo(userAfter.getGroups().withAdded(selectedGroup)));
+    }
 }

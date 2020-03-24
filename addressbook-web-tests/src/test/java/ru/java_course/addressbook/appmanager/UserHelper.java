@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.UserData;
 import ru.java_course.addressbook.model.Users;
 
@@ -172,14 +173,33 @@ public class UserHelper extends HelperBase {
         click(By.name("add"));
     }
 
+    public void allGroupsInUserPage() {
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText("[all]");
+    }
+
+    public void addInGroupFinal(UserData selectedUser, GroupData selectedGroup) {
+        selectUserById(selectedUser.getId());
+        addUserToGroupAfterSelect(selectedGroup);
+    }
+
+    public void addUserToGroupAfterSelect(GroupData selectedGroup) {
+        String id = String.valueOf(selectedGroup.getId());
+        new Select(wd.findElement(By.name("to_group"))).selectByValue(id);
+        click(By.name("add"));
+    }
+
+    public void deleteFromGroupFinal(UserData user, GroupData group) {
+        String id = String.valueOf(group.getId());
+        new Select(wd.findElement(By.name("group"))).selectByValue(id);
+        selectUserById(user.getId());
+        deleteUserFromGroupAfterSelect();
+    }
+
     public void returnToSelectedGropePage(int id) {
         click(By.xpath(String.format("//div[@class='msgbox']//i//a[@href='./?group=%s']", id)));
     }
 
-    public void deleteFromGroup(int userId, int groupId) {
-        selectUserById(userId);
+    public void deleteUserFromGroupAfterSelect() {
         click(By.name("remove"));
-        userCache = null;
-        returnToSelectedGropePage(groupId);
     }
 }
