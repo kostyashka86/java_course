@@ -1,21 +1,10 @@
 package ru.java_course.addressbook.tests;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.java_course.addressbook.model.GroupData;
 import ru.java_course.addressbook.model.Groups;
 import ru.java_course.addressbook.model.UserData;
 import ru.java_course.addressbook.model.Users;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +16,7 @@ public class AddUserToGroupTests extends TestBase {
     private int userId;
     private int groupId;
 
-    @DataProvider()
+    /*@DataProvider()
     public static Iterator<Object[]> validUsersFromJson() throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/users.json")))) {
             String json = "";
@@ -61,7 +50,7 @@ public class AddUserToGroupTests extends TestBase {
     @DataProvider
     public static Object[][] datafromJson() throws IOException {
         return new Object[][]{{validUsersFromJson().next()[0], validGroupsFromJson().next()[0]}};
-    }
+    }*/
 
     public void ensurePreconditions(UserData user, GroupData group) {
         app.goTo().homePage();
@@ -95,7 +84,7 @@ public class AddUserToGroupTests extends TestBase {
         }
     }
 
-    @Test(dataProvider = "datafromJson")
+    @Test
     public void testAddUserToGroup(UserData user, GroupData group) {
         ensurePreconditions(user, group);
         app.goTo().homePage();
