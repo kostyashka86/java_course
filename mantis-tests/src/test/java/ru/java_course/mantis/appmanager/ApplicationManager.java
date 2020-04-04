@@ -24,6 +24,7 @@ public class ApplicationManager {
     private MailHelper mailHelper;
     private JamesHelper jamesHelper;
     private DbHelper dbHelper;
+    private SoapHelper soapHelper;
 
     public ApplicationManager(String browser) {
         this.browser = browser;
@@ -101,5 +102,12 @@ public class ApplicationManager {
             wd.get(properties.getProperty("web.baseUrl"));
         }
         return wd;
+    }
+
+    public SoapHelper soap() {
+        if (soapHelper == null) {
+            soapHelper = new SoapHelper(this);
+        }
+        return soapHelper;
     }
 }

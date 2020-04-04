@@ -30,7 +30,6 @@ public class ChangePasswordTests extends TestBase {
         Users users = app.dbHelper().userInfoFromDb();
         for (UserData userFind : users) {
             if (!userFind.getName().equals("administrator")) {
-                //users.iterator().next();
                 user = userFind;
                 break;
             }
